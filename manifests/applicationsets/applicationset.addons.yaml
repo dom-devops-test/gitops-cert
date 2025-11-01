@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: addons-applicationset
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/dom-devops-test/gitops-cert.git
+      revision: HEAD
+      directories:
+        - path: manifests/addons/*
+  template:
+    metadata:
+      name: '{{`{{path.basename}}`}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/dom-devops-test/gitops-cert.git
+        targetRevision: HEAD
+        chart: ./manifests/addons/{{path.basename}}
+        helm:
+          valueFiles:
+            - cluster/apps/addons/{{path.basename}}/values.yaml
+      destination:
+        namespace: '{{`{{path.basename}}`}}'
+        server: 'https://kubernetes.default.svc'
+      syncPolicy:
+        automated:
+          prune: true
+          allowEmpty: true
+        syncOptions:
+        - CreateNamespace=true
