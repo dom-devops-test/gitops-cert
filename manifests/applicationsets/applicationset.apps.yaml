@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apps-applicationset
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/dom-devops-test/gitops-cert.git
+      revision: HEAD
+      directories:
+        - path: manifests/apps/*
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/dom-devops-test/gitops-cert.git
+        targetRevision: HEAD
+        path: manifests/apps/{{path.basename}}
+        helm:
+          valueFiles:
+            - /cluster/apps/{{path.basename}}/values.yaml
+      destination:
+        namespace: '{{path.basename}}'
+        server: 'https://kubernetes.default.svc'
+      syncPolicy:
+        automated:
+          prune: true
+          allowEmpty: true
+        syncOptions:
+        - CreateNamespace=true
