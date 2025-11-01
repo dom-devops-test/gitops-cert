@@ -1,3 +1,10 @@
 server:
   service:
     type: NodePort
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: argo.homelab.com
+    tls: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-staging
