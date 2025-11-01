@@ -32,30 +32,27 @@ spec:
         syncOptions:
         - CreateNamespace=true
 
-  # Extra app for cert-manager ClusterIssuer
-  templates:
-    - name: clusterissuer
-      generators:
-        - list:
-            elements:
-              - name: cert-manager-clusterissuer
-                namespace: cert-manager
-                path: cluster/addons/cert-manager/clusterissuer.yaml
-      template:
-        metadata:
-          name: '{{name}}'
-        spec:
-          project: default
-          source:
-            repoURL: https://github.com/dom-devops-test/gitops-cert.git
-            targetRevision: HEAD
-            path: '{{path}}'
-          destination:
-            namespace: '{{namespace}}'
-            server: 'https://kubernetes.default.svc'
-          syncPolicy:
-            automated:
-              prune: true
-              allowEmpty: true
-            syncOptions:
-              - CreateNamespace=true
+---
+# Extra app for cert-manager ClusterIssuer
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager-clusterissuers
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/dom-devops-test/gitops-cert.git
+    targetRevision: HEAD
+    path: cluster/addons/cert-manager
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+    syncOptions:
+      - CreateNamespace=true

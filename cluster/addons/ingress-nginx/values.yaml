@@ -1,3 +1,5 @@
 controller:
   service:
-    type: NodePort
+    type: nodePort
+  admissionWebhooks:
+    enabled: false

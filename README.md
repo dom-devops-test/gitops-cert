@@ -25,10 +25,10 @@ kind delete cluster --name my-cluster
 ### Install argocd
 
 ```
-kubectl create ns argocd
+kubectl create ns argocd 
 helm install argocd argo/argo-cd --version 6.10.2 -n argocd
 # Once installed get password with 
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo \n
 ```
 
 ### Create the Addon Applicationset 
