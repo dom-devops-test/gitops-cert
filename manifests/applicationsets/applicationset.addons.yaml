@@ -12,18 +12,18 @@ spec:
         - path: manifests/addons/*
   template:
     metadata:
-      name: '{{`{{path.basename}}`}}'
+      name: '{{path.basename}}'
     spec:
       project: default
       source:
         repoURL: https://github.com/dom-devops-test/gitops-cert.git
         targetRevision: HEAD
-        chart: ./manifests/addons/{{path.basename}}
+        path: manifests/addons/{{path.basename}}
         helm:
           valueFiles:
-            - cluster/apps/addons/{{path.basename}}/values.yaml
+            - /cluster/addons/{{path.basename}}/values.yaml
       destination:
-        namespace: '{{`{{path.basename}}`}}'
+        namespace: '{{path.basename}}'
         server: 'https://kubernetes.default.svc'
       syncPolicy:
         automated:
