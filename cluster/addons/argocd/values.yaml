@@ -7,4 +7,4 @@ server:
     hostname: argo.homelab.com
     tls: true
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-staging
+      cert-manager.io/cluster-issuer: self-signed
