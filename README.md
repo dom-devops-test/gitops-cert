@@ -30,3 +30,9 @@ helm install argocd argo/argo-cd --version 6.10.2 -n argocd
 # Once installed get password with 
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
+
+### Create the Addon Applicationset 
+
+```
+kubectl apply -f ./manifests/applicationsets/applicationset.addons.yaml
+```
